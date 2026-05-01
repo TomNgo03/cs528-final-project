@@ -10,7 +10,12 @@ from spotipy.oauth2 import SpotifyOAuth
 
 from config import SPOTIFY_COMMANDS
 
-SCOPES = "user-read-playback-state user-modify-playback-state user-read-currently-playing"
+SCOPES = (
+    "user-read-playback-state "
+    "user-modify-playback-state "
+    "user-read-currently-playing "
+    "user-library-modify"
+)
 
 
 def get_client() -> spotipy.Spotify:
@@ -59,6 +64,25 @@ def volume_down(sp: spotipy.Spotify | None = None, step: int = 10) -> None:
     volume = max(0, _current_volume(sp) - step)
     sp.volume(volume)
     print(f"Spotify: volume {volume}%")
+
+
+def add_to_liked_songs(sp: spotipy.Spotify | None = None) -> None:
+    sp = sp or get_client()
+    playback = sp.current_playback()
+    if not playback or not playback.get("item"):
+        print("Spotify: no active track to like")
+        return
+
+    track = playback["item"]
+    track_id = track.get("id")
+    if not track_id:
+        print("Spotify: current item cannot be added to Liked Songs")
+        return
+
+    sp.current_user_saved_tracks_add(tracks=[track_id])
+    artists = ", ".join(artist["name"] for artist in track.get("artists", []))
+    title = track.get("name", "current track")
+    print(f"Spotify: added to Liked Songs: {title} - {artists}")
 
 
 def execute_gesture(gesture: str, sp: spotipy.Spotify | None = None) -> None:

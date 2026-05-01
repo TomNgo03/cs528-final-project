@@ -14,9 +14,9 @@ GESTURES = [
     "tap_index",
     "swipe_right",
     "swipe_left",
-    "circle_clockwise",
-    "circle_counterclockwise",
-    "snap_or_double_tap",
+    "swipe_up",
+    "swipe_down",
+    "double_tap",
 ]
 
 DATA_DIR = PROJECT_ROOT / "data"
@@ -41,7 +41,7 @@ SPOTIFY_COMMANDS = {
     "tap_index": "play_pause",
     "swipe_right": "next_track",
     "swipe_left": "previous_track",
-    "circle_clockwise": "volume_up",
-    "circle_counterclockwise": "volume_down",
-    "snap_or_double_tap": "play_pause",
+    "swipe_up": "volume_up",
+    "swipe_down": "volume_down",
+    "double_tap": "add_to_liked_songs",
 }

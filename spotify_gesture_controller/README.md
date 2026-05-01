@@ -11,9 +11,9 @@ The project extends the HW1 ESP32S3 + MPU6050 I2C firmware and the HW2 Python se
 | `tap_index` | Play / pause |
 | `swipe_right` | Next track |
 | `swipe_left` | Previous track |
-| `circle_clockwise` | Volume up |
-| `circle_counterclockwise` | Volume down |
-| `snap_or_double_tap` | Optional play / pause |
+| `swipe_up` | Volume up |
+| `swipe_down` | Volume down |
+| `double_tap` | Add current track to Liked Songs |
 
 ## Hardware
 
@@ -93,9 +93,9 @@ cd spotify_gesture_controller
 python scripts/capture_gestures.py --gesture tap_index --count 100 --port /dev/cu.usbmodem1101
 python scripts/capture_gestures.py --gesture swipe_right --count 100 --port /dev/cu.usbmodem1101
 python scripts/capture_gestures.py --gesture swipe_left --count 100 --port /dev/cu.usbmodem1101
-python scripts/capture_gestures.py --gesture circle_clockwise --count 100 --port /dev/cu.usbmodem1101
-python scripts/capture_gestures.py --gesture circle_counterclockwise --count 100 --port /dev/cu.usbmodem1101
-python scripts/capture_gestures.py --gesture snap_or_double_tap --count 100 --port /dev/cu.usbmodem1101
+python scripts/capture_gestures.py --gesture swipe_up --count 100 --port /dev/cu.usbmodem1101
+python scripts/capture_gestures.py --gesture swipe_down --count 100 --port /dev/cu.usbmodem1101
+python scripts/capture_gestures.py --gesture double_tap --count 100 --port /dev/cu.usbmodem1101
 ```
 
 Files are saved as:
@@ -154,7 +154,7 @@ export SPOTIPY_CLIENT_SECRET="your_client_secret"
 export SPOTIPY_REDIRECT_URI="http://127.0.0.1:8080/callback"
 ```
 
-The first run opens an authorization flow. Spotify playback commands require an active device, so start Spotify on your phone or laptop before the demo.
+The first run opens an authorization flow. Spotify playback commands require an active device, so start Spotify on your phone or laptop before the demo. Double tap uses Spotify's library permission to add the current track to Liked Songs.
 
 ## Real-Time Prediction
 
