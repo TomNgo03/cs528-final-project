@@ -1,0 +1,4 @@
+{
+  "status": "not_trained_yet",
+  "note": "Run scripts/train_model.py after collecting and preprocessing data to generate gesture_model.pkl and label_encoder.pkl."
+}

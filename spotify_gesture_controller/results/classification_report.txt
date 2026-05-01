@@ -1,0 +1,1 @@
+Model has not been trained yet. Run scripts/train_model.py after collecting and preprocessing data.

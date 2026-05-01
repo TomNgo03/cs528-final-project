@@ -1,0 +1,2 @@
+dependencies:
+  espressif/mpu6050: "^1.2.0"

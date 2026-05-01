@@ -1,0 +1,4 @@
+{
+  "status": "not_trained_yet",
+  "note": "Run scripts/train_model.py to generate training metrics."
+}
