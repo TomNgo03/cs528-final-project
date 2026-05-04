@@ -1,1 +1,12 @@
-Model has not been trained yet. Run scripts/train_model.py after collecting and preprocessing data.
+              precision    recall  f1-score   support
+
+  double_tap     1.0000    1.0000    1.0000        20
+  swipe_down     1.0000    1.0000    1.0000        20
+  swipe_left     1.0000    1.0000    1.0000        20
+ swipe_right     1.0000    1.0000    1.0000        20
+    swipe_up     1.0000    1.0000    1.0000        20
+   tap_index     1.0000    1.0000    1.0000        20
+
+    accuracy                         1.0000       120
+   macro avg     1.0000    1.0000    1.0000       120
+weighted avg     1.0000    1.0000    1.0000       120

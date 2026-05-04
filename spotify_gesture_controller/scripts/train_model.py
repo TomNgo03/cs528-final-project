@@ -5,9 +5,19 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 from pathlib import Path
 
+os.environ.setdefault(
+    "MPLCONFIGDIR",
+    str(Path(__file__).resolve().parents[1] / "results" / ".matplotlib"),
+)
+os.environ.setdefault("LOKY_MAX_CPU_COUNT", "1")
+
 import joblib
+import matplotlib
+
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -51,7 +61,7 @@ def main() -> None:
         "svc__gamma": ["scale", "auto", 0.01, 0.1],
     }
     cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    search = GridSearchCV(svm, svm_grid, cv=cv, scoring="accuracy", n_jobs=-1, refit=True)
+    search = GridSearchCV(svm, svm_grid, cv=cv, scoring="accuracy", n_jobs=1, refit=True)
     search.fit(X_train, y_train)
 
     models = {

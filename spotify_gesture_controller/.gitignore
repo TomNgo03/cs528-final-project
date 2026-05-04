@@ -6,3 +6,4 @@ data/raw/*/*.csv
 data/processed/*.csv
 models/*.pkl
 results/confusion_matrix.png
+results/.matplotlib/
