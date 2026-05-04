@@ -7,9 +7,9 @@
   },
   "svm_best_cv_accuracy": 1.0,
   "test_accuracy_by_model": {
-    "svm": 1.0,
-    "random_forest": 1.0,
-    "knn": 1.0
+    "svm": 0.9583333333333334,
+    "random_forest": 0.9583333333333334,
+    "knn": 0.9583333333333334
   },
   "classes": [
     "double_tap",
