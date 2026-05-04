@@ -203,13 +203,7 @@ void app_main(void)
 
     ESP_ERROR_CHECK(i2c_master_init());
     ESP_ERROR_CHECK(imu_init_all());
-    print_help();
-
-    char line[COMMAND_BUF_SIZE];
-    while (true) {
-        ESP_LOGI(TAG, "Waiting for command. Default label is %s", current_gesture);
-        if (fgets(line, sizeof(line), stdin) != NULL) {
-            handle_command(line);
-        }
-    }
+    ESP_LOGI(TAG, "Starting automatic live CSV streaming mode.");
+    current_mode = MODE_STREAM;
+    stream_imu_forever();
 }
