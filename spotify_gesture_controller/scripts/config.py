@@ -11,12 +11,10 @@ MIN_VALID_ROWS = int(SAMPLES_PER_WINDOW * 0.85)
 MAX_VALID_ROWS = int(SAMPLES_PER_WINDOW * 1.20)
 
 GESTURES = [
-    "tap_index",
     "swipe_right",
     "swipe_left",
     "swipe_up",
     "swipe_down",
-    "double_tap",
 ]
 
 DATA_DIR = PROJECT_ROOT / "data"
@@ -38,10 +36,8 @@ CSV_COLUMNS = [
 IMU_AXES = CSV_COLUMNS[1:]
 
 SPOTIFY_COMMANDS = {
-    "tap_index": "play_pause",
     "swipe_right": "next_track",
     "swipe_left": "previous_track",
     "swipe_up": "volume_up",
     "swipe_down": "volume_down",
-    "double_tap": "add_to_liked_songs",
 }

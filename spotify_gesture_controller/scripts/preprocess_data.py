@@ -29,7 +29,12 @@ def estimate_sample_rate(time_ms: np.ndarray) -> float:
     return float(1.0 / np.median(dt))
 
 
-def clean_dataframe(path: Path, smooth: bool = False, smooth_window: int = 3) -> pd.DataFrame:
+def clean_dataframe(
+    path: Path,
+    smooth: bool = False,
+    smooth_window: int = 3,
+    min_rows: int = MIN_VALID_ROWS,
+) -> pd.DataFrame:
     df = pd.read_csv(path)
     df = df[[c for c in CSV_COLUMNS if c in df.columns]].copy()
     if list(df.columns) != CSV_COLUMNS:
@@ -38,7 +43,7 @@ def clean_dataframe(path: Path, smooth: bool = False, smooth_window: int = 3) ->
     for col in CSV_COLUMNS:
         df[col] = pd.to_numeric(df[col], errors="coerce")
     df = df.dropna().drop_duplicates(subset=["Time(ms)"]).sort_values("Time(ms)")
-    if len(df) < MIN_VALID_ROWS:
+    if len(df) < min_rows:
         raise ValueError(f"{path} has too few valid rows: {len(df)}")
 
     df["Time(ms)"] = df["Time(ms)"] - df["Time(ms)"].iloc[0]
@@ -99,6 +104,25 @@ def axis_features(x: np.ndarray, fs: float, prefix: str) -> dict[str, float]:
     }
 
 
+def directional_features(x: np.ndarray, prefix: str) -> dict[str, float]:
+    """Capture signed motion shape so opposite swipes do not look identical."""
+    x = np.asarray(x, dtype=float)
+    x0 = x - np.mean(x)
+    half = max(1, len(x0) // 2)
+    max_idx = int(np.argmax(x0))
+    min_idx = int(np.argmin(x0))
+    return {
+        f"{prefix}_signed_area": float(np.sum(x0) / len(x0)),
+        f"{prefix}_signed_abs_area": float(np.sum(np.sign(x0) * np.abs(x0)) / len(x0)),
+        f"{prefix}_first_half_mean": float(np.mean(x0[:half])),
+        f"{prefix}_second_half_mean": float(np.mean(x0[half:])),
+        f"{prefix}_half_delta": float(np.mean(x0[:half]) - np.mean(x0[half:])),
+        f"{prefix}_max_before_min": float(max_idx < min_idx),
+        f"{prefix}_peak_order_delta": float((max_idx - min_idx) / max(1, len(x0) - 1)),
+        f"{prefix}_signed_peak": float(x0[max_idx] if abs(x0[max_idx]) >= abs(x0[min_idx]) else x0[min_idx]),
+    }
+
+
 def extract_features(df: pd.DataFrame, sample_rate: float | None = None) -> dict[str, float]:
     fs = sample_rate or estimate_sample_rate(df["Time(ms)"].to_numpy())
     features: dict[str, float] = {"sample_rate_estimate": fs, "row_count": float(len(df))}
@@ -112,6 +136,7 @@ def extract_features(df: pd.DataFrame, sample_rate: float | None = None) -> dict
             .replace(")", "")
         )
         features.update(axis_features(df[col].to_numpy(), fs, prefix))
+        features.update(directional_features(df[col].to_numpy(), prefix))
 
     accel_mag = np.sqrt(
         df["AccelX(g)"].to_numpy() ** 2
@@ -128,7 +153,11 @@ def extract_features(df: pd.DataFrame, sample_rate: float | None = None) -> dict
     return features
 
 
-def build_feature_table(raw_dir: Path, smooth: bool = False) -> tuple[pd.DataFrame, pd.Series]:
+def build_feature_table(
+    raw_dir: Path,
+    smooth: bool = False,
+    min_rows: int = MIN_VALID_ROWS,
+) -> tuple[pd.DataFrame, pd.Series]:
     rows: list[dict[str, float]] = []
     labels: list[str] = []
     for gesture in GESTURES:
@@ -137,7 +166,7 @@ def build_feature_table(raw_dir: Path, smooth: bool = False) -> tuple[pd.DataFra
             continue
         for csv_path in sorted(gesture_dir.glob("*.csv")):
             try:
-                df = clean_dataframe(csv_path, smooth=smooth)
+                df = clean_dataframe(csv_path, smooth=smooth, min_rows=min_rows)
                 rows.append(extract_features(df))
                 labels.append(gesture)
             except Exception as exc:
@@ -153,9 +182,10 @@ def main() -> None:
     parser.add_argument("--raw-dir", type=Path, default=RAW_DATA_DIR)
     parser.add_argument("--out-dir", type=Path, default=PROCESSED_DATA_DIR)
     parser.add_argument("--smooth", action="store_true", help="Apply a small moving average filter")
+    parser.add_argument("--min-rows", type=int, default=MIN_VALID_ROWS)
     args = parser.parse_args()
 
-    features, labels = build_feature_table(args.raw_dir, smooth=args.smooth)
+    features, labels = build_feature_table(args.raw_dir, smooth=args.smooth, min_rows=args.min_rows)
     args.out_dir.mkdir(parents=True, exist_ok=True)
     features.to_csv(args.out_dir / "features.csv", index=False)
     labels.to_csv(args.out_dir / "labels.csv", index=False)

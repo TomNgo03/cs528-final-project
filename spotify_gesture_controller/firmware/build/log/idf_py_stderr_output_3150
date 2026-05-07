@@ -1,0 +1,13 @@
+[0;33m--- esp-idf-monitor 1.9.0 on /dev/cu.usbserial-1130 115200[0m
+[0;33m--- Quit: Ctrl+] | Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H[0m
+[0m--- 0x42008e9e: [0;33mapp_main[0m[0m at [0;32m/Users/tungngo/cs528-final-project/spotify_gesture_controller/firmware/main/main.c[0m[0m:[1;31m205[0m
+[0m--- 0x4037acd3: [0;33m_esp_error_check_failed[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/esp_system/esp_err.c[0m[0m:[1;31m49[0m
+[0m--- 0x40375ade: [0;33mpanic_abort[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/esp_system/panic.c[0m[0m:[1;31m463[0m
+[0m--- 0x4037acdd: [0;33mesp_system_abort[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/esp_system/port/esp_system_chip.c[0m[0m:[1;31m92[0m
+[0m--- 0x40381699: [0;33mabort[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/newlib/abort.c[0m[0m:[1;31m38[0m
+[0m--- 0x4037acd3: [0;33m_esp_error_check_failed[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/esp_system/esp_err.c[0m[0m:[1;31m49[0m
+[0m--- 0x42008e9e: [0;33mapp_main[0m[0m at [0;32m/Users/tungngo/cs528-final-project/spotify_gesture_controller/firmware/main/main.c[0m[0m:[1;31m205[0m
+[0m--- 0x42019d83: [0;33mmain_task[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/freertos/app_startup.c[0m[0m:[1;31m208[0m
+[0m--- 0x4037b785: [0;33mvPortTaskWrapper[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/freertos/FreeRTOS-Kernel/portable/xtensa/port.c[0m[0m:[1;31m139[0m
+[0m--- 0x40375a18: [0;33mesp_restart_noos[0m[0m at [0;32m/Users/tungngo/esp/esp-idf/components/esp_system/port/soc/esp32s3/system_internal.c[0m[0m:[1;31m158[0m
+[0m

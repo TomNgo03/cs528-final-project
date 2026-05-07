@@ -103,6 +103,7 @@ def main() -> None:
         "classes": class_names,
         "requested_gestures": GESTURES,
         "feature_columns": list(X.columns),
+        "training_window_samples": int(round(float(X["row_count"].median()))) if "row_count" in X else None,
         "train_size": int(len(y_train)),
         "test_size": int(len(y_test)),
     }

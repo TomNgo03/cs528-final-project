@@ -1,7 +1,7 @@
 {
     "version":            "1.1",
     "project_name":       "spotify_gesture_controller",
-    "project_version":    "fbee0ca-dirty",
+    "project_version":    "5d9303a-dirty",
     "project_path":       "/Users/tungngo/cs528-final-project/spotify_gesture_controller/firmware",
     "idf_path":           "/Users/tungngo/esp/esp-idf",
     "build_dir":          "/Users/tungngo/cs528-final-project/spotify_gesture_controller/firmware/build",
