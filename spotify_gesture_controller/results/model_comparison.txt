@@ -1,0 +1,13 @@
+Model Comparison
+================
+
+SVM accuracy: 95.08%
+Random Forest accuracy: 98.36%
+KNN accuracy: 100.00%
+
+Best saved model: knn
+Train samples: 243
+Test samples: 61
+
+Note: These scores are measured on the cleaned, controlled dataset.
+Live Spotify testing is still used because real-time IMU gestures can vary.

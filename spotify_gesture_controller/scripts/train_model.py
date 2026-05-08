@@ -82,8 +82,38 @@ def main() -> None:
     joblib.dump(best_model, args.model_dir / "gesture_model.pkl")
     joblib.dump(encoder, args.model_dir / "label_encoder.pkl")
 
+    comparison_lines = [
+        "Model Comparison",
+        "================",
+        "",
+        f"SVM accuracy: {scores['svm'] * 100:.2f}%",
+        f"Random Forest accuracy: {scores['random_forest'] * 100:.2f}%",
+        f"KNN accuracy: {scores['knn'] * 100:.2f}%",
+        "",
+        f"Best saved model: {best_name}",
+        f"Train samples: {len(y_train)}",
+        f"Test samples: {len(y_test)}",
+        "",
+        "Note: These scores are measured on the cleaned, controlled dataset.",
+        "Live Spotify testing is still used because real-time IMU gestures can vary.",
+        "",
+    ]
+    (args.results_dir / "model_comparison.txt").write_text(
+        "\n".join(comparison_lines),
+        encoding="utf-8",
+    )
+
     report = classification_report(y_test, y_pred, target_names=class_names, digits=4)
-    (args.results_dir / "classification_report.txt").write_text(report, encoding="utf-8")
+    report_text = "\n".join(
+        [
+            *comparison_lines,
+            f"Classification Report for Best Model ({best_name})",
+            "==========================================",
+            "",
+            report,
+        ]
+    )
+    (args.results_dir / "classification_report.txt").write_text(report_text, encoding="utf-8")
 
     cm = confusion_matrix(y_test, y_pred, labels=np.arange(len(class_names)))
     fig, ax = plt.subplots(figsize=(8, 7))
