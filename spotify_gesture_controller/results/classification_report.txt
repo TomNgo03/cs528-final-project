@@ -1,10 +1,12 @@
               precision    recall  f1-score   support
 
-  swipe_down     1.0000    1.0000    1.0000        10
+  double_tap     1.0000    1.0000    1.0000         8
+  swipe_down     1.0000    1.0000    1.0000         9
   swipe_left     1.0000    1.0000    1.0000        13
  swipe_right     1.0000    1.0000    1.0000        13
-    swipe_up     1.0000    1.0000    1.0000         9
+    swipe_up     1.0000    1.0000    1.0000        10
+   tap_index     1.0000    1.0000    1.0000         8
 
-    accuracy                         1.0000        45
-   macro avg     1.0000    1.0000    1.0000        45
-weighted avg     1.0000    1.0000    1.0000        45
+    accuracy                         1.0000        61
+   macro avg     1.0000    1.0000    1.0000        61
+weighted avg     1.0000    1.0000    1.0000        61

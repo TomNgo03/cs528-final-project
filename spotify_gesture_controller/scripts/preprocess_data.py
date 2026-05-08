@@ -123,6 +123,41 @@ def directional_features(x: np.ndarray, prefix: str) -> dict[str, float]:
     }
 
 
+def impulse_features(x: np.ndarray, fs: float, prefix: str) -> dict[str, float]:
+    """Describe short tap impacts and whether there are one or two pulses."""
+    x = np.asarray(x, dtype=float)
+    x0 = np.abs(x - np.median(x))
+    if len(x0) < 3:
+        return {
+            f"{prefix}_impulse_count": 0.0,
+            f"{prefix}_impulse_max_gap_s": 0.0,
+            f"{prefix}_top2_peak_ratio": 0.0,
+        }
+
+    threshold = float(np.mean(x0) + 1.25 * np.std(x0))
+    min_gap = max(1, int(0.12 * fs))
+    peaks: list[int] = []
+    for idx in range(1, len(x0) - 1):
+        if x0[idx] <= threshold:
+            continue
+        if x0[idx] < x0[idx - 1] or x0[idx] < x0[idx + 1]:
+            continue
+        if peaks and idx - peaks[-1] < min_gap:
+            if x0[idx] > x0[peaks[-1]]:
+                peaks[-1] = idx
+            continue
+        peaks.append(idx)
+
+    top_values = np.sort(x0)[-2:]
+    top2_ratio = float(top_values[0] / top_values[1]) if top_values[1] > 0 and len(top_values) == 2 else 0.0
+    peak_gaps = np.diff(peaks) / fs if len(peaks) > 1 else np.array([0.0])
+    return {
+        f"{prefix}_impulse_count": float(min(len(peaks), 4)),
+        f"{prefix}_impulse_max_gap_s": float(np.max(peak_gaps)),
+        f"{prefix}_top2_peak_ratio": top2_ratio,
+    }
+
+
 def extract_features(df: pd.DataFrame, sample_rate: float | None = None) -> dict[str, float]:
     fs = sample_rate or estimate_sample_rate(df["Time(ms)"].to_numpy())
     features: dict[str, float] = {"sample_rate_estimate": fs, "row_count": float(len(df))}
@@ -149,7 +184,9 @@ def extract_features(df: pd.DataFrame, sample_rate: float | None = None) -> dict
         + df["GyroZ(dps)"].to_numpy() ** 2
     )
     features.update(axis_features(accel_mag, fs, "AccelMagnitude"))
+    features.update(impulse_features(accel_mag, fs, "AccelMagnitude"))
     features.update(axis_features(gyro_mag, fs, "GyroMagnitude"))
+    features.update(impulse_features(gyro_mag, fs, "GyroMagnitude"))
     return features
 
 

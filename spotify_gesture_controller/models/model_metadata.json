@@ -1,27 +1,31 @@
 {
-  "best_model": "svm",
+  "best_model": "knn",
   "svm_best_params": {
-    "svc__C": 0.1,
+    "svc__C": 10,
     "svc__gamma": "scale",
-    "svc__kernel": "linear"
+    "svc__kernel": "rbf"
   },
-  "svm_best_cv_accuracy": 1.0,
+  "svm_best_cv_accuracy": 0.9876700680272108,
   "test_accuracy_by_model": {
-    "svm": 1.0,
-    "random_forest": 1.0,
+    "svm": 0.9508196721311475,
+    "random_forest": 0.9836065573770492,
     "knn": 1.0
   },
   "classes": [
+    "double_tap",
     "swipe_down",
     "swipe_left",
     "swipe_right",
-    "swipe_up"
+    "swipe_up",
+    "tap_index"
   ],
   "requested_gestures": [
+    "tap_index",
     "swipe_right",
     "swipe_left",
     "swipe_up",
-    "swipe_down"
+    "swipe_down",
+    "double_tap"
   ],
   "feature_columns": [
     "sample_rate_estimate",
@@ -158,6 +162,9 @@
     "AccelMagnitude_dominant_frequency",
     "AccelMagnitude_spectral_centroid",
     "AccelMagnitude_low_band_ratio_0_5hz",
+    "AccelMagnitude_impulse_count",
+    "AccelMagnitude_impulse_max_gap_s",
+    "AccelMagnitude_top2_peak_ratio",
     "GyroMagnitude_mean",
     "GyroMagnitude_std",
     "GyroMagnitude_min",
@@ -169,9 +176,12 @@
     "GyroMagnitude_zero_crossing_rate",
     "GyroMagnitude_dominant_frequency",
     "GyroMagnitude_spectral_centroid",
-    "GyroMagnitude_low_band_ratio_0_5hz"
+    "GyroMagnitude_low_band_ratio_0_5hz",
+    "GyroMagnitude_impulse_count",
+    "GyroMagnitude_impulse_max_gap_s",
+    "GyroMagnitude_top2_peak_ratio"
   ],
   "training_window_samples": 120,
-  "train_size": 179,
-  "test_size": 45
+  "train_size": 243,
+  "test_size": 61
 }
